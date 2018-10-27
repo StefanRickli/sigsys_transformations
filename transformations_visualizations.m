@@ -77,7 +77,6 @@ subplot(2,1,1);
 omegas = 0:0.001:2*pi;
 periodic_plot(omegas, abs(X_dtft).^2, n_plot_periods, 2*pi);
 
-add_vert_lines(gca, n_plot_periods, 2*pi);
 title('Energy Spectral Density S_X(\omega) from DTFT');
 legend('S_x(\omega)');
 
@@ -86,7 +85,6 @@ taus = -1.5*N:1.5*N;
 omegas = 0:0.001:2*pi;
 periodic_plot(omegas, abs(dtft(R_x_nonper, taus, omegas)), n_plot_periods, 2*pi);
 
-add_vert_lines(gca, n_plot_periods, 2*pi);
 title('Energy Spectral Density S_X(\omega) from nonperiodic autocorrelation');
 legend('S_x(\omega)');
 
@@ -127,7 +125,6 @@ ylim(ylim(f2_ax));
 
 periodic_stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft), n_plot_periods, 2*pi);
 
-add_vert_lines(gca, n_plot_periods, 2*pi);
 title('DFT of periodic signal x_p[n], X[k]');
 legend('DFT of x_p[n], X[k]');
 
@@ -280,6 +277,8 @@ function periodic_plot(x, y, n_periods, T)
     if (T - 2*pi < 2*eps)
         add_radiant_xticks(n_periods);
     end
+    
+    add_vert_lines(gca, n_periods, T);
 end
 
 
@@ -297,6 +296,8 @@ function periodic_stem(x, y, n_periods, T)
     end
 
     xlim(ceil(n_periods * T) * [-1 1]);
+    
+    add_vert_lines(gca, n_periods, T);
 end
 
 
