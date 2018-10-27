@@ -297,6 +297,10 @@ function periodic_stem(x, y, n_periods, T)
 
     xlim(ceil(n_periods * T) * [-1 1]);
     
+    if (T - 2*pi < 2*eps)
+        add_radiant_xticks(n_periods);
+    end
+    
     add_vert_lines(gca, n_periods, T);
 end
 
