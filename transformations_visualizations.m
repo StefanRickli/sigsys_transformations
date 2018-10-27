@@ -117,7 +117,7 @@ X_dft = fft(signal);
 figure(f2);
 hold on;
 stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft));
-legend('DTFT of x[n], X(\omega)', 'DFT of x[n], X[k]');
+legend('DTFT of x[n], X(\omega)', 'DFT of x_p[n], X[k]');
 f2_ax = gca;
 
 % Make a new figure with the DFT plot alone, this time with periodicity
@@ -130,8 +130,8 @@ ylim(ylim(f2_ax));
 periodic_stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft), n_plot_periods, 2*pi);
 
 add_vert_lines(gca, n_plot_periods, 2*pi);
-title('DFT x_p[n], X[k]');
-legend('X[k]');
+title('DFT of periodic signal x_p[n], X[k]');
+legend('DFT of x_p[n], X[k]');
 
 
 %% Periodic Autocorrelation
@@ -270,10 +270,10 @@ function periodic_stem(x, y, n_periods, T)
 
     dimmed_color = [88, 172, 250] ./ 256;
     for ii = 2:ceil(n_periods)
-        stem(x + T*(ii-1), y, 'filled','Color', dimmed_color, 'MarkerEdgeColor', dimmed_color, 'MarkerFaceColor', dimmed_color);
+        stem(x + T*(ii-1), y, 'filled', 'Color', dimmed_color, 'MarkerEdgeColor', dimmed_color, 'MarkerFaceColor', dimmed_color);
     end
     for ii = 1:ceil(n_periods)
-        stem(x - T*ii, y, 'filled','Color', dimmed_color, 'MarkerEdgeColor', dimmed_color, 'MarkerFaceColor', dimmed_color);
+        stem(x - T*ii, y, 'filled', 'Color', dimmed_color, 'MarkerEdgeColor', dimmed_color, 'MarkerFaceColor', dimmed_color);
     end
 
     xlim(ceil(n_periods * T) * [-1 1]);
