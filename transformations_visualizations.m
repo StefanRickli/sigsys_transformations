@@ -51,13 +51,11 @@ title('Finite-energy time signal x[n]');
 f2 = figure('name', 'DTFT of finite-energy signal x[n], X(omega)');
 
 t = 0:N-1;
-omegas = n_plot_periods*(-2*pi:0.001:2*pi);
+omegas = 0:0.001:2*pi;
 X_dtft = dtft(signal, t, omegas);
 
 % Plot the DTFT of the finite-energy signal
-plot(omegas, abs(X_dtft));
-
-add_vert_lines(gca, n_plot_periods, 2*pi);
+periodic_plot(omegas, abs(X_dtft), n_plot_periods, 2*pi);
 
 title('DTFT of finite-energy signal x[n], X(\omega)');
 
@@ -76,8 +74,8 @@ xlabel('Time Shift [samples]');
 f3 = figure('name', 'Energy Spectral Density S_X(omega) of finite-energy signal x[n]');
 
 subplot(2,1,1);
-omegas = n_plot_periods*(-2*pi:0.001:2*pi);
-plot(omegas, abs(X_dtft).^2)
+omegas = 0:0.001:2*pi;
+periodic_plot(omegas, abs(X_dtft).^2, n_plot_periods, 2*pi);
 
 add_vert_lines(gca, n_plot_periods, 2*pi);
 title('Energy Spectral Density S_X(\omega) from DTFT');
@@ -85,8 +83,8 @@ legend('S_x(\omega)');
 
 subplot(2,1,2);
 taus = -1.5*N:1.5*N;
-omegas = n_plot_periods*(-2*pi:0.001:2*pi);
-plot(omegas, abs(dtft(R_x_nonper, taus, omegas)))
+omegas = 0:0.001:2*pi;
+periodic_plot(omegas, abs(dtft(R_x_nonper, taus, omegas)), n_plot_periods, 2*pi);
 
 add_vert_lines(gca, n_plot_periods, 2*pi);
 title('Energy Spectral Density S_X(\omega) from nonperiodic autocorrelation');
@@ -116,7 +114,7 @@ X_dft = fft(signal);
 % correctly in X- and Y-Axis.
 figure(f2);
 hold on;
-stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft));
+stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft), 'r');
 legend('DTFT of x[n], X(\omega)', 'DFT of x_p[n], X[k]');
 f2_ax = gca;
 
@@ -262,6 +260,28 @@ function add_vert_lines(ax, n_periods, T)
         line(ax, -T * (ii - 1) * [1 1], ylim(ax));
     end
 end
+
+
+function periodic_plot(x, y, n_periods, T)
+    
+    plot(x, y, 'b');
+    hold on;
+
+    dimmed_color = [88, 172, 250] ./ 256;
+    for ii = 2:ceil(n_periods)
+        plot(x + T*(ii-1), y, 'Color', dimmed_color);
+    end
+    for ii = 1:ceil(n_periods)
+        plot(x - T*ii, y, 'Color', dimmed_color);
+    end
+
+    xlim(ceil(n_periods * T) * [-1 1]);
+    
+    if (T - 2*pi < 2*eps)
+        add_radiant_xticks(n_periods);
+    end
+end
+
 
 function periodic_stem(x, y, n_periods, T)
     
