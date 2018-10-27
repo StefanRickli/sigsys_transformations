@@ -249,7 +249,7 @@ function R = periodic_autocorrelation(x, taus)
     R = R ./ length(x);
 end
 
-%%
+%% Plotting helper functions
 function add_vert_lines(ax, n_periods, T)
     % Adds n_periods vertical lines at x = n*T except at zero
     
@@ -277,5 +277,18 @@ function periodic_stem(x, y, n_periods, T)
     end
 
     xlim(ceil(n_periods * T) * [-1 1]);
+end
+
+
+function add_radiant_xticks(n_periods)
+    tick_arr = [-2*pi, -pi, 0, pi, 2*pi];
+    tick_arr_str = {'-2\pi', '-\pi', '0', '\pi', '2\pi'};
+
+    for ii = 2:floor(n_periods)
+        tick_arr = [-ii*2*pi, -(2*(ii-1) + 1) * pi, tick_arr, (2*(ii-1) + 1) * pi, ii*2*pi];
+        tick_arr_str = {sprintf('-%d\\pi', ii*2), sprintf('-%d\\pi', (2*(ii-1) + 1)), tick_arr_str{:}, sprintf('%d\\pi', (2*(ii-1) + 1)), sprintf('%d\\pi', ii*2)};
+    end
+    xticks(tick_arr);
+    xticklabels(tick_arr_str);
 end
 
