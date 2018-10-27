@@ -28,7 +28,6 @@ signal = conv(white_noise, ones(1, noise_filt_N) ./ noise_filt_N, 'same') + ...
 t = (1:N) - 1;
 
 f1 = figure('name', 'Finite-energy time signal');
-f1_ax = axes();
 
 % Plot main signal
 stem(t, signal, 'filled', 'b');
@@ -45,8 +44,6 @@ end
 xlim(x_time_limits);
 ylim(y_time_limits);
 add_vert_lines(gca, n_plot_periods, N);
-f1_ax.XAxisLocation = 'origin';
-f1_ax.YAxisLocation = 'origin';
 title('Finite-energy time signal x[n]');
 
 
@@ -98,7 +95,6 @@ legend('S_x(\omega)');
 
 %% Plot periodic signal x_p[n]
 f5 = figure('name', 'Periodic signal x_p[n]');
-f5_ax = axes();
 
 t = (1:N) - 1;
 periodic_stem(t, signal, n_plot_periods, N);
@@ -106,8 +102,6 @@ periodic_stem(t, signal, n_plot_periods, N);
 xlim(x_time_limits);
 ylim(y_time_limits);
 add_vert_lines(gca, n_plot_periods, N);
-f5_ax.XAxisLocation = 'origin';
-f5_ax.YAxisLocation = 'origin';
 title('Periodic signal x_p[n]');
 
 
