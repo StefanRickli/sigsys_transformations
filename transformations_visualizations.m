@@ -27,7 +27,7 @@ signal = conv(white_noise, ones(1, noise_filt_N) ./ noise_filt_N, 'same') + ...
 % Plot our signal
 t = (1:N) - 1;
 
-f1 = figure('name', 'Finite-energy time signal');
+f1 = figure('name', 'Finite-energy time signal x(k)');
 
 % Plot main signal
 stem(t, signal, 'filled', 'b');
@@ -44,11 +44,13 @@ end
 xlim(x_time_limits);
 ylim(y_time_limits);
 add_vert_lines(gca, n_plot_periods, N);
-title('Finite-energy time signal x[n]');
+title('Finite-energy time signal');
+xlabel('Time [samples]');
+legend('x(k)');
 
 
 %% DTFT of finite-energy signal
-f2 = figure('name', 'DTFT of finite-energy signal x[n], X(omega)');
+f2 = figure('name', 'DTFT of finite-energy signal');
 
 t = 0:N-1;
 omegas = 0:0.001:2*pi;
@@ -57,27 +59,29 @@ X_dtft = dtft(signal, t, omegas);
 % Plot the DTFT of the finite-energy signal
 periodic_plot(omegas, abs(X_dtft), n_plot_periods, 2*pi);
 
-title('DTFT of finite-energy signal x[n], X(\omega)');
+title('DTFT of finite-energy signal');
+legend('X(\omega)');
 
 %% Nonperiodic autocorrelation of finite-energy signal
-f4 = figure('name', 'Nonperiodic autocorrelation R_x[tau]');
+f4 = figure('name', 'Nonperiodic autocorrelation');
 
 taus = -1.5*N:1.5*N;
 R_x_nonper = nonperiodic_autocorrelation(signal, taus);
 stem(taus, R_x_nonper, 'filled', 'b');
 
-title('Nonperiodic autocorrelation R_x[\tau]');
+title('Nonperiodic autocorrelation');
 xlabel('Time Shift [samples]');
+legend('R_x(\tau)');
 
 
 %% Energy Spectral Density S_X(omega) of finite-energy signal x[n]
-f3 = figure('name', 'Energy Spectral Density S_X(omega) of finite-energy signal x[n]');
+f3 = figure('name', 'Energy Spectral Density of finite-energy signal');
 
 subplot(2,1,1);
 omegas = 0:0.001:2*pi;
 periodic_plot(omegas, abs(X_dtft).^2, n_plot_periods, 2*pi);
 
-title('Energy Spectral Density S_X(\omega) from DTFT');
+title('Energy Spectral Density from DTFT');
 legend('S_x(\omega)');
 
 subplot(2,1,2);
@@ -85,12 +89,12 @@ taus = -1.5*N:1.5*N;
 omegas = 0:0.001:2*pi;
 periodic_plot(omegas, abs(dtft(R_x_nonper, taus, omegas)), n_plot_periods, 2*pi);
 
-title('Energy Spectral Density S_X(\omega) from nonperiodic autocorrelation');
+title('Energy Spectral Density from nonperiodic autocorrelation');
 legend('S_x(\omega)');
 
 
 %% Plot periodic signal x_p[n]
-f5 = figure('name', 'Periodic signal x_p[n]');
+f5 = figure('name', 'Periodic signal');
 
 t = (1:N) - 1;
 periodic_stem(t, signal, n_plot_periods, N);
@@ -98,10 +102,12 @@ periodic_stem(t, signal, n_plot_periods, N);
 xlim(x_time_limits);
 ylim(y_time_limits);
 add_vert_lines(gca, n_plot_periods, N);
-title('Periodic signal x_p[n]');
+title('Periodic signal');
+xlabel('Time [samples]');
+legend('x_p(k)');
 
 
-%% DFT of periodic signal x_per[n]
+%% DFT of periodic signal x_p[n]
 
 % Generate the DFT of x[n].
 % Note that, as the DFT assumes the signal to be N-periodic, we can give it
@@ -113,11 +119,11 @@ X_dft = fft(signal);
 figure(f2);
 hold on;
 stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft), 'r');
-legend('DTFT of x[n], X(\omega)', 'DFT of x_p[n], X[k]');
+legend('X(\omega)', 'X_N(\omega_n)');
 f2_ax = gca;
 
 % Make a new figure with the DFT plot alone, this time with periodicity
-f6 = figure('name', 'DFT of periodic signal x_p[n], X[k]');
+f6 = figure('name', 'DFT of periodic signal');
 f6_ax = axes();
 
 xlim(xlim(f2_ax));
@@ -125,37 +131,41 @@ ylim(ylim(f2_ax));
 
 periodic_stem(linspace(0,2*(N-1)/N*pi, N), abs(X_dft), n_plot_periods, 2*pi);
 
-title('DFT of periodic signal x_p[n], X[k]');
-legend('DFT of x_p[n], X[k]');
+title('DFT of periodic signal');
+legend('X_N(\omega_n)');
 
 
 %% Periodic Autocorrelation
-f8 = figure('name', 'Periodic autocorrelation R_x[tau]');
+f8 = figure('name', 'Periodic autocorrelation');
 
 tau = 0:N-1;
 periodic_stem(tau, periodic_autocorrelation(signal, tau), n_plot_periods, N);
 
 add_vert_lines(gca, 2, N);
-title('Periodic autocorrelation R_x[\tau]');
+title('Periodic autocorrelation');
+xlabel('Time Shift [samples]');
+legend('R_x(\tau)');
 
 
 %% Power Spectral Density PSD
-f7 = figure('name', 'Power Spectral Density (PSD) phi_x[k] of periodic signal x_p[n]');
+f7 = figure('name', 'Power Spectral Density (PSD)');
 
-f2_sp = subplot(2,1,1);
-omega = linspace(0,2*(N-1)/N*pi, N);
-periodic_stem(omega, abs(X_dft).^2 / N, n_plot_periods, 2*pi);
-
-add_vert_lines(gca, 2, 2*pi);
-title('Power Spectral Density (PSD) \phi_x[k] from periodic autocorrelation');
-
-subplot(2,1,2);
+subplot(2,1,1);
 omega = linspace(0,2*(N-1)/N*pi, N);
 tau = 0:N-1;
 periodic_stem(omega, abs(dtft(periodic_autocorrelation(signal, tau), tau, omega)), n_plot_periods, 2*pi);
 
 add_vert_lines(gca, 2, 2*pi);
-title('Power Spectral Density (PSD) \phi_x[k] from DFT');
+title('Power Spectral Density (PSD) from DFT');
+legend('\phi_x(\omega_n)');
+
+subplot(2,1,2);
+omega = linspace(0,2*(N-1)/N*pi, N);
+periodic_stem(omega, abs(X_dft).^2 / N, n_plot_periods, 2*pi);
+
+add_vert_lines(gca, 2, 2*pi);
+title('Power Spectral Density (PSD) from periodic autocorrelation');
+legend('\phi_x(\omega_n)');
 
 
 %% Discrete Time Fourier Transformation Function
